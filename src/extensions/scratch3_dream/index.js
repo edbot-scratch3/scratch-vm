@@ -104,6 +104,7 @@ class Scratch3DreamBlocks {
 			}
 		})
 		.catch(err => {
+			console.log(err);
 			if(!confirm("Unable to connect to the Edbot Software.\nContinue in Demo mode?")) {
 				return Promise.reject();
 			}
