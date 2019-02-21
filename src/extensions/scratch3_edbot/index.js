@@ -20,7 +20,7 @@ class Scratch3EdbotBlocks {
         return 'edbot';
     }
 
-	constructor() {
+	constructor(runtime) {
 		console.log("Edbot extension constructor");
 	}
 
@@ -755,13 +755,13 @@ class Scratch3EdbotBlocks {
 							var servo = i + 1;
 							return { text: servo.toString(), value: servo };
 						} else {
-							return { text: "All", value: 0 };
+							return { text: "all", value: 0 };
 						}
 					}
 				),
 				unitMenu: [
-					{ text: "IR sensor", value: 0 },
-					{ text: "IR raw value", value: 1 }
+					{ text: "IR-sensor", value: 0 },
+					{ text: "IR-raw-value", value: 1 }
 				]
 			}
 		};

@@ -19,7 +19,7 @@ class Scratch3DreamBlocks {
         return 'dream';
     }
 
-	constructor() {
+	constructor(runtime) {
 		console.log("Edbot Dream extension constructor");
 	}
 
