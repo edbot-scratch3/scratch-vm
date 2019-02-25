@@ -11,7 +11,7 @@ const blockIconURI = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNv
 const USER = "Scratcher";
 const CLIENT = "Scratch 3.0";
 
-var robots = {};	// robot name to client map
+var robots = {};	// map robot name to client object
 var names = [];		// sorted robot names
 var motions = {};	// motions object
 
@@ -27,7 +27,7 @@ class Scratch3EdbotBlocks {
 	init() {
 		var instance = this;
 		var client = null;
-		var host = "localhost";
+		var host = "127.0.0.1";
 		var port = 8080;
 
 		return new edbot.EdbotClient(host, port, {
@@ -38,7 +38,10 @@ class Scratch3EdbotBlocks {
 			},
 			onclose: function(event) {
 				console.log("Closed connection to server " + host + ":" + port);
-				instance.reconnect(host, port);
+				if(event.code != 1000) {
+					// Reconnect if required.
+					instance.reconnect(host, port);
+				}
 			}
 		})
 		.connect()
@@ -65,6 +68,10 @@ class Scratch3EdbotBlocks {
 			return client.getRemoteServers();
 		})
 		.then(function(response) {
+			if(Object.keys(robots).length < 1) {
+				// Can now safely disconnect from local server.
+				client.disconnect();
+			}
 			if(response.status.success) {
 				var promises = [];
 				var servers = response.data;
@@ -81,7 +88,10 @@ class Scratch3EdbotBlocks {
 								},
 								onclose: function(event) {
 									console.log("Closed connection to server " + host + ":" + port);
-									instance.reconnect(host, port);
+									if(event.code != 1000) {
+										// Reconnect if required.
+										instance.reconnect(host, port);
+									}
 								}
 							})
 							.connect()
@@ -89,6 +99,9 @@ class Scratch3EdbotBlocks {
 								var names = client.getRobotNames("edbot");
 								for(var i = 0; i < names.length; i++) {
 									robots[names[i]] = client;
+								}
+								if(names.length < 1) {
+									client.disconnect();
 								}
 								return resolve();
 							})
@@ -120,8 +133,8 @@ class Scratch3EdbotBlocks {
 
 	reconnect(host, port) {
 		var instance = this;
-
 		console.log("Reconnecting to server " + host + ":" + port);
+
 		return new edbot.EdbotClient(host, port, {
 			user: USER,
 			client: CLIENT,
@@ -130,7 +143,10 @@ class Scratch3EdbotBlocks {
 			},
 			onclose: function(event) {
 				console.log("Closed connection to server " + host + ":" + port);
-				instance.reconnect(host, port);
+				if(event.code != 1000) {
+					// Reconnect if required.
+					instance.reconnect(host, port);
+				}
 			}
 		})
 		.connect()
