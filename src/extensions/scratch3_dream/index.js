@@ -217,6 +217,7 @@ class Scratch3DreamBlocks {
 						},
 						TOGGLE: {
 							type: ArgumentType.NUMBER,
+							menu: "toggleMenu",
 							defaultValue: 0
 						}
 					}
@@ -355,7 +356,7 @@ class Scratch3DreamBlocks {
 				{
 					opcode: "getPort34",
 					text: "[NAME] [PORT] [UNITS_ALL]",
-					blockType: BlockType.COMMAND,
+					blockType: BlockType.REPORTER,
 					arguments: {
 						NAME: {
 							type: ArgumentType.STRING,
@@ -377,7 +378,7 @@ class Scratch3DreamBlocks {
 				{
 					opcode: "getLeftIR",
 					text: "[NAME] left [UNITS_IR]",
-					blockType: BlockType.COMMAND,
+					blockType: BlockType.REPORTER,
 					arguments: {
 						NAME: {
 							type: ArgumentType.STRING,
@@ -394,7 +395,7 @@ class Scratch3DreamBlocks {
 				{
 					opcode: "getRightIR",
 					text: "[NAME] right [UNITS_IR]",
-					blockType: BlockType.COMMAND,
+					blockType: BlockType.REPORTER,
 					arguments: {
 						NAME: {
 							type: ArgumentType.STRING,
@@ -411,7 +412,7 @@ class Scratch3DreamBlocks {
 				{
 					opcode: "getCentreIR",
 					text: "[NAME] centre [UNITS_IR]",
-					blockType: BlockType.COMMAND,
+					blockType: BlockType.REPORTER,
 					arguments: {
 						NAME: {
 							type: ArgumentType.STRING,
@@ -428,7 +429,7 @@ class Scratch3DreamBlocks {
 				{
 					opcode: "getClapCount",
 					text: "[NAME] clap count [CLAP]",
-					blockType: BlockType.COMMAND,
+					blockType: BlockType.REPORTER,
 					arguments: {
 						NAME: {
 							type: ArgumentType.STRING,
