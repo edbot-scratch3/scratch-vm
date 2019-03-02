@@ -36,7 +36,7 @@
     "canvas-toBlob": "1.0.0",
     "decode-html": "2.0.0",
     "diff-match-patch": "1.0.4",
-    "edbot": "^5.0.5",
+    "edbot": "latest",
     "escape-html": "1.0.3",
     "format-message": "6.2.1",
     "htmlparser2": "3.10.0",
