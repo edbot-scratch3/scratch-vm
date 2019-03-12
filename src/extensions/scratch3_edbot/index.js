@@ -879,7 +879,7 @@ class Scratch3EdbotBlocks {
 			var fservo = "servo-" + ("00" + SERVO).slice(-2);
 			return client.getData().robots[NAME].reporters[fservo].position;
 		} catch(e) {
-			return "";
+			return 0;
 		}
 	}
 
@@ -890,7 +890,7 @@ class Scratch3EdbotBlocks {
 			var fservo = "servo-" + ("00" + SERVO).slice(-2);
 			return client.getData().robots[NAME].reporters[fservo].load;
 		} catch(e) {
-			return "";
+			return 0;
 		}
 	}
 
@@ -936,21 +936,20 @@ class Scratch3EdbotBlocks {
 
 	getServoPositions(args) {
 		const { NAME } = args;
-		try {
-			var client = this.getClient(NAME);
-			var path = "";
-			for(servo = 1; servo <= 16; servo++) {
-				if(servo > 1) {
-					path += "/";
-				}
-				var fservo = "servo-" + ("00" + servo).slice(-2);
-				var position = client.getData().robots[NAME].reporters[fservo].position;
-				path += servo + "/" + position;
+		var client = this.getClient(NAME);
+		var path = "";
+		for(servo = 1; servo <= 16; servo++) {
+			if(servo > 1) {
+				path += "/";
 			}
-			return path;
-		} catch(e) {
-			return "";
+			var fservo = "servo-" + ("00" + servo).slice(-2);
+			var position = "0";
+			try {
+				position = client.getData().robots[NAME].reporters[fservo].position;
+			} catch(e) {}
+			path += servo + "/" + position;
 		}
+		return path;
 	}
 
 	setHeadIRSensor(args) {
