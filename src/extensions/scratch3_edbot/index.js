@@ -290,7 +290,7 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						MOTION: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "basicMotionMenu",
 							defaultValue: motions["Basic"][0].id
 						}
@@ -307,7 +307,7 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						MOTION: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "sportMotionMenu",
 							defaultValue: motions["Sport"][0].id
 						}
@@ -324,7 +324,7 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						MOTION: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "greetMotionMenu",
 							defaultValue: motions["Greet"][0].id
 						}
@@ -341,7 +341,7 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						MOTION: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "danceMotionMenu",
 							defaultValue: motions["Dance"][0].id
 						}
@@ -358,7 +358,7 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						MOTION: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "gymMotionMenu",
 							defaultValue: motions["Gym"][0].id
 						}
@@ -375,7 +375,7 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						MOTION: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "fightMotionMenu",
 							defaultValue: motions["Fight"][0].id
 						}
@@ -408,7 +408,7 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						TOGGLE: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "toggleMenu",
 							defaultValue: 0
 						}
@@ -437,12 +437,12 @@ class Scratch3EdbotBlocks {
 							defaultValue: names[0]
 						},
 						SERVO: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "servoAllMenu",
 							defaultValue: 1
 						},
 						TOGGLE: {
-							type: ArgumentType.NUMBER,
+							type: ArgumentType.STRING,
 							menu: "toggleMenu",
 							defaultValue: 0
 						}
@@ -719,7 +719,7 @@ class Scratch3EdbotBlocks {
 				{
 					opcode: "getStatus",
 					text: "[NAME] [STATUS]",
-					blockType: BlockType.REPORTER,
+					blockType: BlockType.BOOLEAN,
 					arguments: {
 						NAME: {
 							type: ArgumentType.STRING,
@@ -736,49 +736,49 @@ class Scratch3EdbotBlocks {
 			],
 			menus: {
 				nameMenu: names.map(name => ({ text: name, value: name })),
-				basicMotionMenu: motions["Basic"].map(motion => ({ text: motion.name, value: motion.id })),
-				sportMotionMenu: motions["Sport"].map(motion => ({ text: motion.name, value: motion.id })),
-				greetMotionMenu: motions["Greet"].map(motion => ({ text: motion.name, value: motion.id })),
-				danceMotionMenu: motions["Dance"].map(motion => ({ text: motion.name, value: motion.id })),
-				gymMotionMenu:   motions["Gym"].map(motion => ({ text: motion.name, value: motion.id })),
-				fightMotionMenu: motions["Fight"].map(motion => ({ text: motion.name, value: motion.id })),
+				basicMotionMenu: motions["Basic"].map(motion => ({ text: motion.name, value: String(motion.id) })),
+				sportMotionMenu: motions["Sport"].map(motion => ({ text: motion.name, value: String(motion.id) })),
+				greetMotionMenu: motions["Greet"].map(motion => ({ text: motion.name, value: String(motion.id) })),
+				danceMotionMenu: motions["Dance"].map(motion => ({ text: motion.name, value: String(motion.id) })),
+				gymMotionMenu:   motions["Gym"].map(motion => ({ text: motion.name, value: String(motion.id) })),
+				fightMotionMenu: motions["Fight"].map(motion => ({ text: motion.name, value: String(motion.id) })),
 				statusMenu: [
-					{ text: "connected", value: 0 },
-					{ text: "enabled", value: 1 }
+					{ text: "connected", value: "0" },
+					{ text: "enabled", value: "1" }
 				],
 				toggleMenu: [
-					{ text: "off", value: 0 },
-					{ text: "on", value: 1 }
+					{ text: "off", value: "0" },
+					{ text: "on", value: "1" }
 				],
 				colourMenu: [
-					{ text: "off",     value: 0 },
-					{ text: "red",     value: 1 },
-					{ text: "green",   value: 2 },
-					{ text: "yellow",  value: 3 },
-					{ text: "blue",    value: 4 },
-					{ text: "magenta", value: 5 },
-					{ text: "cyan",    value: 6 },
-					{ text: "white",   value: 7 }
+					{ text: "off",     value: "0" },
+					{ text: "red",     value: "1" },
+					{ text: "green",   value: "2" },
+					{ text: "yellow",  value: "3" },
+					{ text: "blue",    value: "4" },
+					{ text: "magenta", value: "5" },
+					{ text: "cyan",    value: "6" },
+					{ text: "white",   value: "7" }
 				],
 				servoMenu: new Array(16).fill().map(
 					(e, i) => {
 						var servo = i + 1;
-						return { text: servo.toString(), value: servo };
+						return { text: String(servo), value: String(servo) };
 					}
 				),
 				servoAllMenu: new Array(17).fill().map(
 					(e, i) => {
 						if(i < 16) {
 							var servo = i + 1;
-							return { text: servo.toString(), value: servo };
+							return { text: String(servo), value: String(servo) };
 						} else {
-							return { text: "all", value: 0 };
+							return { text: "all", value: "0" };
 						}
 					}
 				),
 				unitMenu: [
-					{ text: "IR-sensor", value: 0 },
-					{ text: "IR-raw-value", value: 1 }
+					{ text: "IR-sensor", value: "0" },
+					{ text: "IR-raw-value", value: "1" }
 				]
 			}
 		};

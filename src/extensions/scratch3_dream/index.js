@@ -516,7 +516,7 @@ class Scratch3DreamBlocks {
 				{
 					opcode: "getStatus",
 					text: "[NAME] [STATUS]",
-					blockType: BlockType.REPORTER,
+					blockType: BlockType.BOOLEAN,
 					arguments: {
 						NAME: {
 							type: ArgumentType.STRING,
@@ -534,43 +534,43 @@ class Scratch3DreamBlocks {
 			menus: {
 				nameMenu: names.map(name => ({ text: name, value: name })),
 				directionMenu: [
-					{ text: "clockwise", value: -1 },
-					{ text: "anti-clockwise", value: 1 }
+					{ text: "clockwise", value: "-1" },
+					{ text: "anti-clockwise", value: "1" }
 				],
 				toggleMenu: [
-					{ text: "off", value: 0 },
-					{ text: "on", value: 1 }
+					{ text: "off", value: "0" },
+					{ text: "on", value: "1" }
 				],
 				ports34Menu: [
-					{ text: "port-3", value: 3 },
-					{ text: "port-4", value: 4 }
+					{ text: "port-3", value: "3" },
+					{ text: "port-4", value: "4" }
 				],
 				portsAllMenu: [
-					{ text: "port-1", value: 1 },
-					{ text: "port-2", value: 2 },
-					{ text: "port-3", value: 3 },
-					{ text: "port-4", value: 4 }
+					{ text: "port-1", value: "1" },
+					{ text: "port-2", value: "2" },
+					{ text: "port-3", value: "3" },
+					{ text: "port-4", value: "4" }
 				],
 				unitsIRMenu: [
-					{ text: "IR-sensor", value: 0 },
-					{ text: "IR-raw-value", value: 1 }
+					{ text: "IR-sensor", value: "0" },
+					{ text: "IR-raw-value", value: "1" }
 				],
 				unitsAllMenu: [
-					{ text: "servo-position", value: 0 },
-					{ text: "IR-sensor", value: 1 },
-					{ text: "DMS-sensor", value: 2 },
-					{ text: "temperature-sensor", value: 3 },
-					{ text: "touch-sensor", value: 4 },
-					{ text: "magnetic-sensor", value: 5 },
-					{ text: "raw-value", value: 6 }
+					{ text: "servo-position", value: "0" },
+					{ text: "IR-sensor", value: "1" },
+					{ text: "DMS-sensor", value: "2" },
+					{ text: "temperature-sensor", value: "3" },
+					{ text: "touch-sensor", value: "4" },
+					{ text: "magnetic-sensor", value: "5" },
+					{ text: "raw-value", value: "6" }
 				],
 				clapMenu: [
-					{ text: "live", value: 0 },
-					{ text: "last", value: 1 }
+					{ text: "live", value: "0" },
+					{ text: "last", value: "1" }
 				],
 				statusMenu: [
-					{ text: "connected", value: 0 },
-					{ text: "enabled", value: 1 }
+					{ text: "connected", value: "0" },
+					{ text: "enabled", value: "1" }
 				]
 			}
 		};
