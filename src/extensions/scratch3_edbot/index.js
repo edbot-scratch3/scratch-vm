@@ -22,6 +22,7 @@ class Scratch3EdbotBlocks {
 
 	constructor(runtime) {
 		console.log("Edbot extension constructor");
+        runtime.on("PROJECT_STOP_ALL", this.stopAll.bind(this));
 	}
 
 	init() {
@@ -1043,6 +1044,12 @@ class Scratch3EdbotBlocks {
 			return false;
 		}
 	}
+
+	stopAll() {
+		for(var i = 0; i < names.length; i++) {
+			this.reset( { NAME: names[i] });
+		}
+    }
 }
 
 module.exports = Scratch3EdbotBlocks;

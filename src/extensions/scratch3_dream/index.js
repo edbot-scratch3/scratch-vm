@@ -21,6 +21,7 @@ class Scratch3DreamBlocks {
 
 	constructor(runtime) {
 		console.log("Edbot Dream extension constructor");
+        runtime.on("PROJECT_STOP_ALL", this.stopAll.bind(this));
 	}
 
 	init() {
@@ -840,9 +841,9 @@ class Scratch3DreamBlocks {
 	}
 
 	getStatus(args) {
+		const { NAME, STATUS } = args;
 		try {
 			var client = this.getClient(NAME);
-			const { NAME, STATUS } = args;
 			if(STATUS == 0) {
 				return client.getData().robots[NAME].connected;
 			} else if(STATUS == 1) {
@@ -854,6 +855,12 @@ class Scratch3DreamBlocks {
 			return false;
 		}
 	}
+
+	stopAll() {
+		for(var i = 0; i < names.length; i++) {
+			this.reset( { NAME: names[i] });
+		}
+    }
 }
 
 module.exports = Scratch3DreamBlocks;
