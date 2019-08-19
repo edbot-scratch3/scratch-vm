@@ -35,7 +35,7 @@ class Scratch3EdbotBlocks {
 		//
 		return new edbot.EdbotClient(host, port, {
 			onclose: function(event) {
-				if(event.code = 4001) {
+				if(event.code == 4001) {
 					USER = "Scratcher";
 				}
 			}
