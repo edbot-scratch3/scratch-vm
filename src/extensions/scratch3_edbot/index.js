@@ -8,9 +8,9 @@ const edbot = require("edbot");
 
 const blockIconURI = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gQ3JlYXRlZCB3aXRoIElua3NjYXBlIChodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy8pIC0tPgoKPHN2ZwogICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgdmVyc2lvbj0iMS4xIgogICBpZD0ic3ZnMTAiCiAgIHdpZHRoPSI1NC4wODQ1MDciCiAgIGhlaWdodD0iNTQuMDg0NTA3IgogICB2aWV3Qm94PSIwIDAgNTQuMDg0NTA3IDU0LjA4NDUwNyIKICAgc29kaXBvZGk6ZG9jbmFtZT0iZWRib3Qtc21hbGwuc3ZnIgogICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjkyLjMgKDI0MDU1NDYsIDIwMTgtMDMtMTEpIj4KICA8bWV0YWRhdGEKICAgICBpZD0ibWV0YWRhdGExNiI+CiAgICA8cmRmOlJERj4KICAgICAgPGNjOldvcmsKICAgICAgICAgcmRmOmFib3V0PSIiPgogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PgogICAgICAgIDxkYzp0eXBlCiAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz4KICAgICAgICA8ZGM6dGl0bGU+PC9kYzp0aXRsZT4KICAgICAgPC9jYzpXb3JrPgogICAgPC9yZGY6UkRGPgogIDwvbWV0YWRhdGE+CiAgPGRlZnMKICAgICBpZD0iZGVmczE0IiAvPgogIDxzb2RpcG9kaTpuYW1lZHZpZXcKICAgICBwYWdlY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMSIKICAgICBvYmplY3R0b2xlcmFuY2U9IjEwIgogICAgIGdyaWR0b2xlcmFuY2U9IjEwIgogICAgIGd1aWRldG9sZXJhbmNlPSIxMCIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMCIKICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iNjQwIgogICAgIGlua3NjYXBlOndpbmRvdy1oZWlnaHQ9IjQ4MCIKICAgICBpZD0ibmFtZWR2aWV3MTIiCiAgICAgc2hvd2dyaWQ9ImZhbHNlIgogICAgIGlua3NjYXBlOnpvb209IjQuMzYzNTQxNyIKICAgICBpbmtzY2FwZTpjeD0iMjcuMDQyMjUzIgogICAgIGlua3NjYXBlOmN5PSIyNy4wNDIyNTMiCiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjM0NiIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iNjMiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMCIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJzdmcxMCIgLz4KICA8aW1hZ2UKICAgICB3aWR0aD0iNTQuMDg0NTA3IgogICAgIGhlaWdodD0iNTQuMDg0NTA3IgogICAgIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiCiAgICAgc3R5bGU9ImltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVNwZWVkIgogICAgIHhsaW5rOmhyZWY9ImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQ2dBQUFBb0NBTUFBQUM3SUVoZkFBQUFMSFJGV0hSRGNtVmhkR2x2YmlCVWFXMWxBRlJvCmRTQXhOeUJLWVc0Z01qQXhPU0F3T1Rvd09Eb3hNQ0F0TURBd01ESkd3R29BQUFBSGRFbE5SUWZqQVJFTkt5OWN1SW1sQUFBQUNYQkkKV1hNQUFBcndBQUFLOEFGQ3JEU1lBQUFBQkdkQlRVRUFBTEdQQy94aEJRQUFBd0JRVEZSRkFBQUFBUUVCQWdJQ0F3TURCQVFFQmdZRwpDQWdJQ3dzTERnNE9EdzhQRWhJU0V4TVRGUlVWRmhZV0dCZ1lHUmtaR2hvYUd4c2JJaUlpSXlNaktDZ29LU2twTEN3c0xTMHRNVEV4Ck5EUTBOVFUxTnpjM096czdQajQrUHo4L1FFQkFRME5EUlVWRlJrWkdTa3BLVEV4TVRVMU5VRkJRVVZGUlZsWldXMXRiWDE5ZloyZG4KYTJ0cmJXMXRjSEJ3Y25KeWQzZDNlWGw1ZTN0N2lvcUtqNCtQa0pDUWtaR1JrcEtTbHBhV21KaVltcHFhb2FHaHBxYW1yS3lzczdPegp0YlcxdXJxNmtzWCtrOGIrbE1iK2xjZitsc2YrbDhqK21NaittOHIrbk1yK3A5RCtyTlArcnRUK3Vkcit2dHordnQzK3dNREF5OHZMCnpNek0wZEhSMHRMUzA5UFQxdGJXMTlmWDJOalkydHJhM2QzZDN0N2UzOS9mMHVmLzF1bi8yT3IvM096LzMrNy80T0RnNHVMaTV1Ym0KNStmbjZ1cnE1L0wvNi9YLzdmWC84UER3OGZIeDh2THk5UFQwOXZiMjkvZjM4L24vOWZyLytmbjUrL3Y3K1B2Ly9QejgvUDMvL1A3LwovdjcrL3Y3Ly8vLy9BQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBCkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUEKQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQpBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBCkFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUEKQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQQpBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBCkFBQUFBQUFBQUFBQTVZeHNpQUFBQUh0MFVrNVQvLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8KLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLwovLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLzhBazhPbzZnQUFBYnBKUkVGVWVOcTFsZXRQZ2xBWWgxOUt4R3dyCjBQS1dhZmZVbWJPMGk2bXAzWFhUWVZqenN1WmNXWnV5TWIrZDlkY25vSEJPSWRSYXYwOW5EdytIODc0Y0R2RHh3OEJ2eEhiTUh6U0wKUDZHSzdiM2pWOUVzTC9FRFJkdy9RUllSSTJsWmREV3RSRlQweUNJcjRLelhlNWJUNitGUVlMK0wxZkxsOWQzMVpibHFKYUxhYmFsVQp1cTBoUzNGVXVTbmRWRWJXSW5xL3Y3cC9SeVppUnhENnlxQmI3WktBRUJ1eE5jN0pKdnZhTERqQXhJdmd3eUR2QUx1M05mRUlvSXNOCmR4MGg2WndDVzJDb3prY0FYWXlzRHNaWDJ3d0FuVkZFRW1oaVo1SE9Td2dkQWNDY1Q1THJVSUEwQlpvb09NRnh5aC9Panprc2lmS2kKU0tDTEM2QmxXUkZKb0lsOVZzUHpHL0lTdndDOW1DUTk1ZmFDVWd3SmRMSHZ0YW1ZanFwdEpBSFc4RmFBbmh0WGFJK0trNFlUQUgrRgp3OHhXS0xSVDBEY0NEb3gzajBIK1cwd0JSOXlTc3pGRlEvR1JvMEoxekhOVDRhSHhvN01jNWNxOXFlT1hGQU5lZnRZYWVRL1F2blJUCkdqNGtQVUJ0dE5Bc0VUV2pEcURZVU1BSndHRmZoVkhWZk1MdG9Ka0ZYNnBoMlo1WGdhOExiMy9xNDhxVHBaaGJsOFZFWExUdzJwdDUKNVdnK2lCUUZzeFIzenlhSGZUcHNlb1p2WjMvelYvZ0VNanN4QlRXQVRLb0FBQUFBU1VWT1JLNUNZSUk9CiIKICAgICBpZD0iaW1hZ2UxOCIKICAgICB4PSIwIgogICAgIHk9IjAiIC8+Cjwvc3ZnPgo=";
 
-const USER = "Scratcher";
 const CLIENT = "Scratch 3.0";
 
+var USER = "";
 var robots = {};	// map robot name to client object
 var names = [];		// sorted robot names
 var motions = {};	// motions object
@@ -25,110 +25,136 @@ class Scratch3EdbotBlocks {
         runtime.on("PROJECT_STOP_ALL", this.stopAll.bind(this));
 	}
 
+	test(host, port) {
+		//
+		// Pass a zero length user to the ES to tell it to use the logged in user -
+		// we can't get the user in a browser!
+		//
+		// Older versions of the ES will close the connection with path info error
+		// if passed a zero length user. In that case default to "Scratcher".
+		//
+		return new edbot.EdbotClient(host, port, {
+			onclose: function(event) {
+				if(event.code = 4001) {
+					USER = "Scratcher";
+				}
+			}
+		})
+		.connect()
+		.then(function(client) {
+			if(client && client.getConnected()) {
+				client.disconnect();
+			}
+		});
+	}
+
 	init() {
 		var instance = this;
 		var client = null;
 		var host = "127.0.0.1";
 		var port = 8080;
 
-		return new edbot.EdbotClient(host, port, {
-			user: USER,
-			client: CLIENT,
-			onopen: function(event) {
-				console.log("Connected to server " + host + ":" + port);
-			},
-			onclose: function(event) {
-				console.log("Closed connection to server " + host + ":" + port);
-				if(event.code != 1000) {
-					// Reconnect if required.
-					instance.reconnect(host, port);
-				}
-			}
-		})
-		.connect()
-		.then(function(response) {
-			client = response;
-
-			// Server version check!
-			var version = "";
-			try {
-				version = client.getData()["server"]["version"];
-			} catch(err) {}
-			if(!version.startsWith("5")) {
-				throw "Requires Edbot Software version 5+";
-			}
-
-			var names = client.getRobotNames("edbot");
-			for(var i = 0; i < names.length; i++) {
-				robots[names[i]] = client;
-			}
-			return Promise.resolve(client.getDefaultMotions("edbot"));
-		})
-		.then(function(response) {
-			motions = response.data;
-			return client.getRemoteServers();
-		})
-		.then(function(response) {
-			if(Object.keys(robots).length < 1) {
-				// Can now safely disconnect from local server.
-				client.disconnect();
-			}
-			if(response.status.success) {
-				var promises = [];
-				var servers = response.data;
-				for(var i = 0; i < servers.length; i++) {
-					var host = servers[i].host;
-					var port = servers[i].port;
-					promises.push(new Promise(
-						function(resolve, reject) {
-							return new edbot.EdbotClient(host, port, {
-								user: USER,
-								client: CLIENT,
-								onopen: function(event) {
-									console.log("Connected to server " + host + ":" + port);
-								},
-								onclose: function(event) {
-									console.log("Closed connection to server " + host + ":" + port);
-									if(event.code != 1000) {
-										// Reconnect if required.
-										instance.reconnect(host, port);
-									}
-								}
-							})
-							.connect()
-							.then(function(client) {
-								var names = client.getRobotNames("edbot");
-								for(var i = 0; i < names.length; i++) {
-									robots[names[i]] = client;
-								}
-								if(names.length < 1) {
-									client.disconnect();
-								}
-								return resolve();
-							})
-						}
-					));
-				}
-				return Promise.all(promises)
-				.then(function(promises) {
-					if(Object.keys(robots).length == 0) {
-						if(!confirm("No Edbots found.\nContinue in Demo mode?")) {
-							return Promise.reject();
-						}
-						instance.demoMode();
+		return instance.test(host, port)
+		.then(function() {
+			return new edbot.EdbotClient(host, port, {
+				user: USER,
+				client: CLIENT,
+				onopen: function(event) {
+					console.log("Connected to server " + host + ":" + port);
+				},
+				onclose: function(event) {
+					console.log("Closed connection to server " + host + ":" + port);
+					if(event.code != 1000) {
+						// Reconnect if required.
+						instance.reconnect(host, port);
 					}
-					names = Object.keys(robots).sort();
-					return Promise.resolve();
-				});
-			}
-		})
-		.catch(err => {
-			console.log(err);
-			if(!confirm("Unable to connect to the Edbot Software.\nContinue in Demo mode?")) {
-				return Promise.reject();
-			}
-			instance.demoMode();
-			return Promise.resolve();
+				}
+			})
+			.connect()
+			.then(function(response) {
+				client = response;
+
+				// Server version check!
+				var version = "";
+				try {
+					version = client.getData()["server"]["version"];
+				} catch(err) {}
+				if(!version.startsWith("5")) {
+					throw "Requires Edbot Software version 5+";
+				}
+
+				var names = client.getRobotNames("edbot");
+				for(var i = 0; i < names.length; i++) {
+					robots[names[i]] = client;
+				}
+				return Promise.resolve(client.getDefaultMotions("edbot"));
+			})
+			.then(function(response) {
+				motions = response.data;
+				return client.getRemoteServers();
+			})
+			.then(function(response) {
+				if(Object.keys(robots).length < 1) {
+					// Can now safely disconnect from local server.
+					client.disconnect();
+				}
+				if(response.status.success) {
+					var promises = [];
+					var servers = response.data;
+					for(var i = 0; i < servers.length; i++) {
+						var host = servers[i].host;
+						var port = servers[i].port;
+						promises.push(new Promise(
+							function(resolve, reject) {
+								return new edbot.EdbotClient(host, port, {
+									user: USER,
+									client: CLIENT,
+									onopen: function(event) {
+										console.log("Connected to server " + host + ":" + port);
+									},
+									onclose: function(event) {
+										console.log("Closed connection to server " + host + ":" + port);
+										if(event.code != 1000) {
+											// Reconnect if required.
+											instance.reconnect(host, port);
+										}
+									}
+								})
+								.connect()
+								.then(function(client) {
+									var names = client.getRobotNames("edbot");
+									for(var i = 0; i < names.length; i++) {
+										robots[names[i]] = client;
+									}
+									if(names.length < 1) {
+										client.disconnect();
+									}
+									return resolve();
+								})
+							}
+						));
+					}
+					return Promise.all(promises)
+					.then(function(promises) {
+						if(Object.keys(robots).length == 0) {
+							if(!confirm("No Edbots found.\nContinue in Demo mode?")) {
+								return Promise.reject();
+							}
+							instance.demoMode();
+						}
+						names = Object.keys(robots).sort();
+						return Promise.resolve();
+					});
+				}
+			})
+			.catch(err => {
+				console.log(err);
+				if(!confirm("Unable to connect to the Edbot Software.\nContinue in Demo mode?")) {
+					return Promise.reject();
+				}
+				instance.demoMode();
+				return Promise.resolve();
+			});
 		});
 	}
 

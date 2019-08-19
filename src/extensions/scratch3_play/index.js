@@ -8,9 +8,9 @@ const edbot = require("edbot");
 
 const blockIconURI =  "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTUuMS4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgMTI4IDEyOCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTI4IDEyODsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxjaXJjbGUgc3R5bGU9ImZpbGw6I0UxNkI1QTsiIGN4PSI2NCIgY3k9IjY0IiByPSI2NCIvPgoJPHBhdGggc3R5bGU9ImZpbGw6I0QxNjM1NDsiIGQ9Ik0xMTUuMDYxLDEwMi41NzhMOTkuNjA1LDY0LjI1M2MtMC4wMjgtMC4xNTktMC4wOC0wLjMxNC0wLjE1OC0wLjQ2OCAgIGMtMC4wNzMtMC41MjItMC4zOTYtMS4wMzItMS4wMDQtMS40MjlMNDUuNDYyLDI3LjY0NGMtMS4zOC0wLjkwNC0yLjUwOS0wLjI5NC0yLjUwOSwxLjM1NnYwLjUxMnYwLjUxMlY5OXYwLjUxMlYxMDBsMTAuNzk2LDI3LjE3MiAgIEM1Ny4wODgsMTI3LjcxLDYwLjUxLDEyOCw2NCwxMjhDODQuODU1LDEyOCwxMDMuMzc2LDExOC4wMiwxMTUuMDYxLDEwMi41Nzh6Ii8+Cgk8cGF0aCBzdHlsZT0iZmlsbDojRjVGNUY1OyIgZD0iTTQyLjk1MywyOWMwLTEuNjUsMS4xMjktMi4yNiwyLjUwOS0xLjM1Nmw1Mi45ODEsMzQuNzEyYzEuMzgsMC45MDQsMS4zOCwyLjM4NCwwLDMuMjg5ICAgbC01Mi45ODEsMzQuNzExYy0xLjM4LDAuOTA0LTIuNTA5LDAuMjk1LTIuNTA5LTEuMzU1VjI5eiIvPgo8L2c+Cjwvc3ZnPgo=";
 
-const USER = "Scratcher";
 const CLIENT = "Scratch 3.0";
 
+var USER = "";
 var robots = {};	// map robot name to client object
 var names = [];		// sorted robot names
 
@@ -24,106 +24,132 @@ class Scratch3PlayBlocks {
         runtime.on("PROJECT_STOP_ALL", this.stopAll.bind(this));
 	}
 
+	test(host, port) {
+		//
+		// Pass a zero length user to the ES to tell it to use the logged in user -
+		// we can't get the user in a browser!
+		//
+		// Older versions of the ES will close the connection with path info error
+		// if passed a zero length user. In that case default to "Scratcher".
+		//
+		return new edbot.EdbotClient(host, port, {
+			onclose: function(event) {
+				if(event.code = 4001) {
+					USER = "Scratcher";
+				}
+			}
+		})
+		.connect()
+		.then(function(client) {
+			if(client && client.getConnected()) {
+				client.disconnect();
+			}
+		});
+	}
+
 	init() {
 		var instance = this;
 		var client = null;
 		var host = "127.0.0.1";
 		var port = 8080;
 
-		return new edbot.EdbotClient(host, port, {
-			user: USER,
-			client: CLIENT,
-			onopen: function(event) {
-				console.log("Connected to server " + host + ":" + port);
-			},
-			onclose: function(event) {
-				console.log("Closed connection to server " + host + ":" + port);
-				if(event.code != 1000) {
-					// Reconnect if required.
-					instance.reconnect(host, port);
-				}
-			}
-		})
-		.connect()
-		.then(function(response) {
-			client = response;
-
-			// Server version check!
-			var version = "";
-			try {
-				version = client.getData()["server"]["version"];
-			} catch(err) {}
-			if(!version.startsWith("5")) {
-				throw "Requires Edbot Software version 5+";
-			}
-
-			var names = client.getRobotNames("play");
-			for(var i = 0; i < names.length; i++) {
-				robots[names[i]] = client;
-			}
-			return Promise.resolve(client.getRemoteServers());
-		})
-		.then(function(response) {
-			if(Object.keys(robots).length < 1) {
-				// Can now safely disconnect from local server.
-				client.disconnect();
-			}
-			if(response.status.success) {
-				var promises = [];
-				var servers = response.data;
-				for(var i = 0; i < servers.length; i++) {
-					var host = servers[i].host;
-					var port = servers[i].port;
-					promises.push(new Promise(
-						function(resolve, reject) {
-							return new edbot.EdbotClient(host, port, {
-								user: USER,
-								client: CLIENT,
-								onopen: function(event) {
-									console.log("Connected to server " + host + ":" + port);
-								},
-								onclose: function(event) {
-									console.log("Closed connection to server " + host + ":" + port);
-									if(event.code != 1000) {
-										// Reconnect if required.
-										instance.reconnect(host, port);
-									}
-								}
-							})
-							.connect()
-							.then(function(client) {
-								var names = client.getRobotNames("play");
-								for(var i = 0; i < names.length; i++) {
-									robots[names[i]] = client;
-								}
-								if(names.length < 1) {
-									client.disconnect();
-								}
-								return resolve();
-							})
-						}
-					));
-				}
-				return Promise.all(promises)
-				.then(function(promises) {
-					if(Object.keys(robots).length == 0) {
-						if(!confirm("No Edbot Plays found.\nContinue in Demo mode?")) {
-							return Promise.reject();
-						}
-						instance.demoMode();
+		return instance.test(host, port)
+		.then(function() {
+			return new edbot.EdbotClient(host, port, {
+				user: USER,
+				client: CLIENT,
+				onopen: function(event) {
+					console.log("Connected to server " + host + ":" + port);
+				},
+				onclose: function(event) {
+					console.log("Closed connection to server " + host + ":" + port);
+					if(event.code != 1000) {
+						// Reconnect if required.
+						instance.reconnect(host, port);
 					}
-					names = Object.keys(robots).sort();
-					return Promise.resolve();
-				});
-			}
-		})
-		.catch(err => {
-			console.log(err);
-			if(!confirm("Unable to connect to the Edbot Software.\nContinue in Demo mode?")) {
-				return Promise.reject();
-			}
-			instance.demoMode();
-			return Promise.resolve();
+				}
+			})
+			.connect()
+			.then(function(response) {
+				client = response;
+
+				// Server version check!
+				var version = "";
+				try {
+					version = client.getData()["server"]["version"];
+				} catch(err) {}
+				if(!version.startsWith("5")) {
+					throw "Requires Edbot Software version 5+";
+				}
+
+				var names = client.getRobotNames("play");
+				for(var i = 0; i < names.length; i++) {
+					robots[names[i]] = client;
+				}
+				return Promise.resolve(client.getRemoteServers());
+			})
+			.then(function(response) {
+				if(Object.keys(robots).length < 1) {
+					// Can now safely disconnect from local server.
+					client.disconnect();
+				}
+				if(response.status.success) {
+					var promises = [];
+					var servers = response.data;
+					for(var i = 0; i < servers.length; i++) {
+						var host = servers[i].host;
+						var port = servers[i].port;
+						promises.push(new Promise(
+							function(resolve, reject) {
+								return new edbot.EdbotClient(host, port, {
+									user: USER,
+									client: CLIENT,
+									onopen: function(event) {
+										console.log("Connected to server " + host + ":" + port);
+									},
+									onclose: function(event) {
+										console.log("Closed connection to server " + host + ":" + port);
+										if(event.code != 1000) {
+											// Reconnect if required.
+											instance.reconnect(host, port);
+										}
+									}
+								})
+								.connect()
+								.then(function(client) {
+									var names = client.getRobotNames("play");
+									for(var i = 0; i < names.length; i++) {
+										robots[names[i]] = client;
+									}
+									if(names.length < 1) {
+										client.disconnect();
+									}
+									return resolve();
+								})
+							}
+						));
+					}
+					return Promise.all(promises)
+					.then(function(promises) {
+						if(Object.keys(robots).length == 0) {
+							if(!confirm("No Edbot Plays found.\nContinue in Demo mode?")) {
+								return Promise.reject();
+							}
+							instance.demoMode();
+						}
+						names = Object.keys(robots).sort();
+						return Promise.resolve();
+					});
+				}
+			})
+			.catch(err => {
+				console.log(err);
+				if(!confirm("Unable to connect to the Edbot Software.\nContinue in Demo mode?")) {
+					return Promise.reject();
+				}
+				instance.demoMode();
+				return Promise.resolve();
+			});
 		});
 	}
 
@@ -523,43 +549,13 @@ class Scratch3PlayBlocks {
 				});
 	}
 
-	getPort34(args) {
-		const { NAME, PORT, UNITS_ALL } = args;
-		try {
-			var client = this.getClient(NAME);
-			var raw = client.getData().robots[NAME].reporters["port3"];
-			if(PORT == 4) {
-				raw = client.getData().robots[NAME].reporters["port4"];
-			}
-			switch(UNITS_ALL) {
-				case 0:
-					return edbot.util.rawToSM10Angle(raw);
-				case 1:
-					return edbot.util.rawToIRSS10Dist(raw);
-				case 2:
-					return edbot.util.rawToDMS80Dist(raw);
-				case 3:
-					return edbot.util.rawToTPS10Temp(raw);
-				case 4:
-					return edbot.util.rawToTS10Touch(raw);
-				case 5:
-					return edbot.util.rawToMGSS10Mag(raw);
-				case 6:
-				default:
-					return raw;
-			}
-		} catch(e) {
-			return 0;
-		}
-	}
-
 	getLeftIR(args) {
 		const { NAME, UNITS_IR } = args;
 		try {
 			var client = this.getClient(NAME);
 			if(UNITS_IR == 0) {
 				var raw = client.getData().robots[NAME].reporters["leftIR"];
-				return edbot.util.rawToCM150Dist(raw);
+				return edbot.util.rawToCM50Dist(raw);
 			} else {
 				return client.getData().robots[NAME].reporters["leftIR"];
 			}
@@ -574,7 +570,7 @@ class Scratch3PlayBlocks {
 			var client = this.getClient(NAME);
 			if(UNITS_IR == 0) {
 				var raw = client.getData().robots[NAME].reporters["rightIR"];
-				return edbot.util.rawToCM150Dist(raw);
+				return edbot.util.rawToCM50Dist(raw);
 			} else {
 				return client.getData().robots[NAME].reporters["rightIR"];
 			}
@@ -589,7 +585,7 @@ class Scratch3PlayBlocks {
 			var client = this.getClient(NAME);
 			if(UNITS_IR == 0) {
 				var raw = client.getData().robots[NAME].reporters["centreIR"];
-				return edbot.util.rawToCM150Dist(raw);
+				return edbot.util.rawToCM50Dist(raw);
 			} else {
 				return client.getData().robots[NAME].reporters["centreIR"];
 			}
