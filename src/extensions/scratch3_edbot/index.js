@@ -43,7 +43,15 @@ class Scratch3EdbotBlocks {
 		.connect()
 		.then(function(client) {
 			if(client && client.getConnected()) {
+				var found = client.getData().user.match(/.+ <(.+)@.+>/);
+				if(found && found.length > 1) {
+					USER = found[1];
+				}
 				client.disconnect();
+			}
+			if(USER.length < 1) {
+				// Shouldn't happen..
+				USER = "Scratcher";
 			}
 		});
 	}
