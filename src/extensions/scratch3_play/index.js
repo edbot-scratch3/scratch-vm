@@ -1,5 +1,5 @@
 /*
- * Edbot Play Scratch 3.0 extension.
+ * Edbot Play&Code Scratch 3.0 extension.
  */
  
 const ArgumentType = require("../../extension-support/argument-type");
@@ -20,7 +20,7 @@ class Scratch3PlayBlocks {
     }
 
 	constructor(runtime) {
-		console.log("Edbot Play extension constructor");
+		console.log("Edbot Play&Code extension constructor");
         runtime.on("PROJECT_STOP_ALL", this.stopAll.bind(this));
 	}
 
@@ -206,7 +206,7 @@ class Scratch3PlayBlocks {
 	getInfo() {
 		return {
 			id: Scratch3PlayBlocks.EXTENSION_ID,
-			name: "Edbot Play",
+			name: "Edbot Play&Code",
             blockIconURI: blockIconURI,
 			blocks: [
 				{
