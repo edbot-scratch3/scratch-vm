@@ -140,7 +140,7 @@ class Scratch3PlayBlocks {
 					return Promise.all(promises)
 					.then(function(promises) {
 						if(Object.keys(robots).length == 0) {
-							if(!confirm("No Edbot Plays found.\nContinue in Demo mode?")) {
+							if(!confirm("No Edbot Play&Code robots found.\nContinue in Demo mode?")) {
 								return Promise.reject();
 							}
 							instance.demoMode();
@@ -206,7 +206,7 @@ class Scratch3PlayBlocks {
 	getInfo() {
 		return {
 			id: Scratch3PlayBlocks.EXTENSION_ID,
-			name: "Edbot Play&Code",
+			name: "Edbot Play+Code",
             blockIconURI: blockIconURI,
 			blocks: [
 				{
