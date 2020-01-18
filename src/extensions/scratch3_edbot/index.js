@@ -795,15 +795,15 @@ class Scratch3EdbotBlocks {
 					{ text: "cyan",    value: "6" },
 					{ text: "white",   value: "7" }
 				],
-				servoMenu: new Array(16).fill().map(
+				servoMenu: new Array(17).fill().map(
 					(e, i) => {
 						var servo = i + 1;
 						return { text: String(servo), value: String(servo) };
 					}
 				),
-				servoAllMenu: new Array(17).fill().map(
+				servoAllMenu: new Array(18).fill().map(
 					(e, i) => {
-						if(i < 16) {
+						if(i < 17) {
 							var servo = i + 1;
 							return { text: String(servo), value: String(servo) };
 						} else {
@@ -973,7 +973,7 @@ class Scratch3EdbotBlocks {
 		const { NAME } = args;
 		var client = this.getClient(NAME);
 		var path = "";
-		for(servo = 1; servo <= 16; servo++) {
+		for(servo = 1; servo <= 17; servo++) {
 			if(servo > 1) {
 				path += "/";
 			}

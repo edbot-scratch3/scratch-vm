@@ -10,6 +10,7 @@ const BlockType = require('./block-type');
 const Scratch3EdbotBlocks = require('../extensions/scratch3_edbot');
 const Scratch3DreamBlocks = require('../extensions/scratch3_dream');
 const Scratch3PlayBlocks = require('../extensions/scratch3_play');
+const Scratch3EdbotEV3Blocks = require('../extensions/scratch3_eev3');
 const Scratch3PenBlocks = require('../extensions/scratch3_pen');
 const Scratch3WeDo2Blocks = require('../extensions/scratch3_wedo2');
 const Scratch3MusicBlocks = require('../extensions/scratch3_music');
@@ -28,6 +29,7 @@ const builtinExtensions = {
 	edbot: Scratch3EdbotBlocks,
 	dream: Scratch3DreamBlocks,
 	play: Scratch3PlayBlocks,
+	eev3: Scratch3EdbotEV3Blocks,
     pen: Scratch3PenBlocks,
     wedo2: Scratch3WeDo2Blocks,
     music: Scratch3MusicBlocks,
